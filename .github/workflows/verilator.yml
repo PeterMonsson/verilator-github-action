@@ -1,0 +1,31 @@
+name: Verilator Testbench
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Verilator
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git make autoconf g++ flex bison libfl-dev
+          git clone https://github.com/verilator/verilator.git
+          cd verilator
+          git checkout verilator_5_008
+          autoconf
+          ./configure
+          make -j$(nproc)
+          sudo make install
+          sudo ldconfig
+      - name: Compile Verilog code
+        run: verilator -Wall -cc tb.v --exe testbench.cpp
+      - name: Build testbench
+        run: make -C obj_dir/ -j -f Vtb.mk Vtb
+      - name: Run testbench
+        run: obj_dir/Vtb
