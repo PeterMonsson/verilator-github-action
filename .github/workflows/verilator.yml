@@ -9,20 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: verilator/verilator:latest
+      options: --user root
     steps:
       - uses: actions/checkout@v2
-      - name: Install Verilator
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git make autoconf g++ flex bison libfl-dev
-          git clone https://github.com/verilator/verilator.git
-          cd verilator
-          git checkout v5.008
-          autoconf
-          ./configure
-          make -j$(nproc)
-          sudo make install
-          sudo ldconfig
       - name: Compile Verilog code
         run: verilator -Wall -cc tb.v --exe testbench.cpp
       - name: Build testbench
