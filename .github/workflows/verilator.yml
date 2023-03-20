@@ -16,7 +16,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: Compile Verilog code
         run: verilator -Wall -cc tb.v --binary
-      - name: Build testbench
-        run: make -C obj_dir/ -j -f Vtb.mk Vtb
       - name: Run testbench
         run: obj_dir/Vtb
