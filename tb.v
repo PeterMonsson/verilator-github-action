@@ -1,6 +1,6 @@
 module tb;
   initial begin
-    $display("Hello World");
+    $error("Hello World");
     $finish;
   end
 endmodule
