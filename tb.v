@@ -5,7 +5,7 @@ module tb;
   
   initial begin
     $display("Hello World");
-    #17;
+    #18;
     $finish;
   end
 endmodule
